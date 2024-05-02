@@ -10,7 +10,7 @@ const HomePage = () => {
             <HomeSectionCarousel/>
             <HomeSectionCarousel/>
             <HomeSectionCarousel/>
-            {/* <HomeSectionCarousel/> */}
+            <HomeSectionCarousel/>
         </div>
     </div>
   )
