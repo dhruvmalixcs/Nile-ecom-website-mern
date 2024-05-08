@@ -8,7 +8,7 @@ const getUserProfile = async(req,res) =>{
         }
 
         const user = await userService.getUserProfileByToken(jwt);
-        return ses.status(200).send(user);
+        return res.status(200).send(user);
     } catch (error) {
         return res.status(500).send({error : error.message});
     }
@@ -17,7 +17,7 @@ const getUserProfile = async(req,res) =>{
 const getAllUsers = async(req,res)=>{
     try {
         const user = await userService.getAllUsers();
-        return res.status(200).send(users);
+        return res.status(200).send(user);
 
     } catch (error) {
         return res.status(500).send({error:error.message});

@@ -8,10 +8,10 @@ app.get("/",(req,res)=>{
     return res.status(200).send({message : "welcome to ecom website",status:true})
 })
 
-const authRouter = require("./routes/auth.routes");
+const authRouter = require("./routes/auth.routes.js");
 app.use("/auth",authRouter);
 
 const userRouters = require("./routes/user.route");
-app.use("/users",userRouters);
+app.use("/api/users",userRouters);
 
 module.exports = app;
