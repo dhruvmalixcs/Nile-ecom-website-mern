@@ -26,7 +26,7 @@ const productSchema = new mongoose.Schema({
     brand:{
         type:String,
     },
-    colour:{
+    color:{
         type:String,
     },
     sizes : [{
