@@ -10,64 +10,57 @@ import {
 } from "@heroicons/react/20/solid";
 import ProductCard from "./ProductCard";
 import { mens_kurta } from "../../../Data/mens_kurta";
+import { filters, singlefilter } from "./filterData";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+import FilterListIcon from '@mui/icons-material/FilterList';
+import "./ProductCard.css";
+import { useLocation, useNavigate } from "react-router-dom";
+
+
 const sortOptions = [
-  { name: "Most Popular", href: "#", current: true },
-  { name: "Best Rating", href: "#", current: false },
-  { name: "Newest", href: "#", current: false },
   { name: "Price: Low to High", href: "#", current: false },
   { name: "Price: High to Low", href: "#", current: false },
-];
-const subCategories = [
-  { name: "Totes", href: "#" },
-  { name: "Backpacks", href: "#" },
-  { name: "Travel Bags", href: "#" },
-  { name: "Hip Bags", href: "#" },
-  { name: "Laptop Sleeves", href: "#" },
-];
-const filters = [
-  {
-    id: "color",
-    name: "Color",
-    options: [
-      { value: "white", label: "White", checked: false },
-      { value: "beige", label: "Beige", checked: false },
-      { value: "blue", label: "Blue", checked: true },
-      { value: "brown", label: "Brown", checked: false },
-      { value: "green", label: "Green", checked: false },
-      { value: "purple", label: "Purple", checked: false },
-    ],
-  },
-  {
-    id: "category",
-    name: "Category",
-    options: [
-      { value: "new-arrivals", label: "New Arrivals", checked: false },
-      { value: "sale", label: "Sale", checked: false },
-      { value: "travel", label: "Travel", checked: true },
-      { value: "organization", label: "Organization", checked: false },
-      { value: "accessories", label: "Accessories", checked: false },
-    ],
-  },
-  {
-    id: "size",
-    name: "Size",
-    options: [
-      { value: "2l", label: "2L", checked: false },
-      { value: "6l", label: "6L", checked: false },
-      { value: "12l", label: "12L", checked: false },
-      { value: "18l", label: "18L", checked: false },
-      { value: "20l", label: "20L", checked: false },
-      { value: "40l", label: "40L", checked: true },
-    ],
-  },
 ];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+/* to be understood */
 export default function Product() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const location =useLocation();
+  const navigate = useNavigate();
+  const handlefilter=(value,sectionId)=>{
+    const searchParams = new URLSearchParams(location.search)
+    let filterValue=searchParams.getAll(sectionId)
+    if(filterValue.length>0 && filterValue[0].split(",").includes(value)){
+      filterValue=filterValue[0].split(",").filter((item)=>item!=value);
+      if(filterValue.length===0){
+        searchParams.delete(sectionId)
+      }
+    }
+    else{
+      filterValue.push(value);
+    }
+    if(filterValue.length>0){
+      searchParams.set(sectionId,filterValue.join(","));
+      
+    }
+    const query=searchParams.toString();
+      navigate({search:`?${query}`})
+  }
+
+  const handleRadioFilter=(e,sectionId)=>{
+    const searchParams=new URLSearchParams(location.search);
+    searchParams.set(sectionId,e.target.value);
+    const query=searchParams.toString();
+      navigate({search:`?${query}`})
+  }
 
   return (
     <div className="bg-white">
@@ -117,20 +110,6 @@ export default function Product() {
 
                   {/* Filters */}
                   <form className="mt-4 border-t border-gray-200">
-                    <h3 className="sr-only">Categories</h3>
-                    <ul
-                      role="list"
-                      className="px-2 py-3 font-medium text-gray-900"
-                    >
-                      {subCategories.map((category) => (
-                        <li key={category.name}>
-                          <a href={category.href} className="block px-2 py-3">
-                            {category.name}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-
                     {filters.map((section) => (
                       <Disclosure
                         as="div"
@@ -167,6 +146,7 @@ export default function Product() {
                                     className="flex items-center"
                                   >
                                     <input
+                                    onChange={()=>handlefilter(option.value,section.id)}
                                       id={`filter-mobile-${section.id}-${optionIdx}`}
                                       name={`${section.id}[]`}
                                       defaultValue={option.value}
@@ -188,6 +168,7 @@ export default function Product() {
                         )}
                       </Disclosure>
                     ))}
+
                   </form>
                 </Dialog.Panel>
               </Transition.Child>
@@ -272,20 +253,71 @@ export default function Product() {
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
               {/* Filters */}
+              <>
               <form className="hidden lg:block">
-                <h3 className="sr-only">Categories</h3>
-                <ul
-                  role="list"
-                  className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900"
+              <div className="py-10 flex justify-between items-center"> 
+              <h1 className="text-lg opacity-50 font-bold">Filters</h1>
+              <FilterListIcon/>
+              </div>
+              {filters.map((section) => (
+                <Disclosure
+                  as="div"
+                  key={section.id}
+                  className="border-b border-gray-200 py-6"
                 >
-                  {subCategories.map((category) => (
-                    <li key={category.name}>
-                      <a href={category.href}>{category.name}</a>
-                    </li>
-                  ))}
-                </ul>
-
-                {filters.map((section) => (
+                  {({ open }) => (
+                    <>
+                      <h3 className="-my-3 flow-root">
+                        <Disclosure.Button className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
+                          <span className="font-medium text-gray-900">
+                            {section.name}
+                          </span>
+                          <span className="ml-6 flex items-center">
+                            {open ? (
+                              <MinusIcon
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
+                            ) : (
+                              <PlusIcon
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
+                            )}
+                          </span>
+                        </Disclosure.Button>
+                      </h3>
+                      <Disclosure.Panel className="pt-6">
+                        <div className="space-y-4">
+                          {section.options.map((option, optionIdx) => (
+                            <div
+                              key={option.value}
+                              className="flex items-center"
+                            >
+                              <input
+                              onChange={()=>handlefilter(option.value,section.id)}
+                                id={`filter-${section.id}-${optionIdx}`}
+                                name={`${section.id}[]`}
+                                defaultValue={option.value}
+                                type="checkbox"
+                                defaultChecked={option.checked}
+                                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                              />
+                              <label
+                                htmlFor={`filter-${section.id}-${optionIdx}`}
+                                className="ml-3 text-sm text-gray-600"
+                              >
+                                {option.label}
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                      </Disclosure.Panel>
+                    </>
+                  )}
+                </Disclosure>
+                ))}
+                {singlefilter.map((section) => (
                   <Disclosure
                     as="div"
                     key={section.id}
@@ -295,9 +327,13 @@ export default function Product() {
                       <>
                         <h3 className="-my-3 flow-root">
                           <Disclosure.Button className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
-                            <span className="font-medium text-gray-900">
+                            <FormLabel
+                            sx={{color:"black"}}
+                              className="text-gray-900"
+                              id="demo-radio-buttons-group-label"
+                            >
                               {section.name}
-                            </span>
+                            </FormLabel>
                             <span className="ml-6 flex items-center">
                               {open ? (
                                 <MinusIcon
@@ -315,27 +351,24 @@ export default function Product() {
                         </h3>
                         <Disclosure.Panel className="pt-6">
                           <div className="space-y-4">
-                            {section.options.map((option, optionIdx) => (
-                              <div
-                                key={option.value}
-                                className="flex items-center"
+                            <FormControl>
+                              <RadioGroup
+                                aria-labelledby="demo-radio-buttons-group-label"
+                                defaultValue="female"
+                                name="radio-buttons-group"
                               >
-                                <input
-                                  id={`filter-${section.id}-${optionIdx}`}
-                                  name={`${section.id}[]`}
-                                  defaultValue={option.value}
-                                  type="checkbox"
-                                  defaultChecked={option.checked}
-                                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                />
-                                <label
-                                  htmlFor={`filter-${section.id}-${optionIdx}`}
-                                  className="ml-3 text-sm text-gray-600"
-                                >
-                                  {option.label}
-                                </label>
-                              </div>
-                            ))}
+                                {section.options.map((option, optionIdx) => (
+                                  <>
+                                    <FormControlLabel
+                                    onChange={(e)=>handleRadioFilter(e,section.id)}
+                                      value={option.value}
+                                      control={<Radio />}
+                                      label={option.label}
+                                    />
+                                  </>
+                                ))}
+                              </RadioGroup>
+                            </FormControl>
                           </div>
                         </Disclosure.Panel>
                       </>
@@ -343,18 +376,18 @@ export default function Product() {
                   </Disclosure>
                 ))}
               </form>
-
+              </>
               {/* Product grid */}
               <div className="lg:col-span-4 w-full ">
                 <div className="flex flex-wrap justify-center bg-white py-5 ">
-                  {mens_kurta.map((item) => 
-                    <ProductCard product={item}/>
-                  )}
+                  {mens_kurta.map((item) => (
+                    <ProductCard product={item} />
+                  ))}
                 </div>
               </div>
             </div>
           </section>
-        </main> 
+        </main>
       </div>
     </div>
   );
