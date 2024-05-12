@@ -2,6 +2,7 @@ const CartItem = require("../models/cartItem.model");
 const userService = require("../services/user.service");
 
 async function updateCartItem(userId,cartItemId,cartItemData){
+    console.log(userId,cartItemId,cartItemData);
     try {
         const item = await findCartItemById(cartItemId);
 
@@ -10,17 +11,17 @@ async function updateCartItem(userId,cartItemId,cartItemData){
         }
 
         const user = await userService.findUserById(item.userId);
-        
+        console.log("item user ",user);
         if(!user){
             throw new Error("user not found",userId);
         }
 
         if(user._id.toString() === userId.toString()){
-            console.log(item);
+            //console.log(item);
             item.quantity = cartItemData.quantity;
             item.price = item.quantity*item.product.price;
             item.discountedPrice = item.quantity*item.product.discountedPrice;
-            console.log(item);
+            //console.log(item);
 
             const updatedCartItem = await item.save();
             return updatedCartItem;
@@ -47,7 +48,7 @@ async function removeCartItem(userId,cartItemId){
 }
 
 async function findCartItemById(cartItemId){
-    const cartItem = await CartItem.findById(cartItemId);
+    const cartItem = await CartItem.findById(cartItemId).populate("product");
     if(cartItem){
         return cartItem;
     }
