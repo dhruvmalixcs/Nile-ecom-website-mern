@@ -28,7 +28,6 @@ const findUserById = async(userId)=>{
         if(!user){
             throw new Error("user not found with Id : ",userId);
         }
-
         return user;
     } catch(error){
         throw new Error(error.message);

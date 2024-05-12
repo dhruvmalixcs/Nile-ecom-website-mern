@@ -32,7 +32,7 @@ async function createProduct(reqData){
     if(!thirdLevel){
         thirdLevel = new Category({
             name:reqData.thirdLevelCategory,
-            parentCategory:secondLevelCategory._id,
+            parentCategory:secondLevel._id,
             level:3
         })
     }
@@ -75,7 +75,7 @@ async function findProductById(id){
     return product;
 }
 
-async function getALlProducts(reqQuery){
+async function getAllProducts(reqQuery){
     let {category,color,sizes,minPrice,maxPrice,minDiscount,sort,stock,pageNumber,pageSize} = reqQuery;
     pageSize= pageSize || 10;
     let query = Product.find().populate("category");
@@ -135,4 +135,19 @@ async function getALlProducts(reqQuery){
     const totalPages = Math.ceil(totalProducts/pageSize);
 
     return {content:products,currentPage:pageNumber,totalPages}
+}
+
+async function createMultipleProduct(product){
+    for(let product of product){
+        await createProduct(product);
+    }
+}
+
+module.exports={
+    createProduct,
+    deleteProduct,
+    updateProduct,
+    getAllProducts, 
+    findProductById,
+    createMultipleProduct
 }

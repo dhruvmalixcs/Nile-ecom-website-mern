@@ -16,12 +16,14 @@ async function updateCartItem(userId,cartItemId,cartItemData){
         }
 
         if(user._id.toString() === userId.toString()){
+            console.log(item);
             item.quantity = cartItemData.quantity;
             item.price = item.quantity*item.product.price;
             item.discountedPrice = item.quantity*item.product.discountedPrice;
+            console.log(item);
 
             const updatedCartItem = await item.save();
-            return updateCartItem;
+            return updatedCartItem;
         }
 
         else{
@@ -35,16 +37,17 @@ async function updateCartItem(userId,cartItemId,cartItemData){
 async function removeCartItem(userId,cartItemId){
     const cartItem = await findCartItemById(cartItemId);
     const user = await userService.findUserById(userId);
+    console.log(user._id.toString(), cartItem.userId.toString())
 
     if(user._id.toString() === cartItem.userId.toString()){
-        await CartItem.findByIdAndDelete(cartItemId);
+        return await CartItem.findByIdAndDelete(cartItemId);
     }
 
     throw new Error("you cannot delete other user's item");
 }
 
 async function findCartItemById(cartItemId){
-    const cartItem = await findCartItemById(cartItemId);
+    const cartItem = await CartItem.findById(cartItemId);
     if(cartItem){
         return cartItem;
     }

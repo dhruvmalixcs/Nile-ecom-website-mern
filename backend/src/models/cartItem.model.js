@@ -8,7 +8,7 @@ const cartItemSchema = new mongoose.Schema({
     },
     product:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"product",
+        ref:"products",
         required:true
     },
     size:{
@@ -22,11 +22,11 @@ const cartItemSchema = new mongoose.Schema({
     },
     price:{
         type:Number,
-        required:true
+        //required:true
     },
     discountedPrice:{
         type:Number,
-        required:true
+        //required:true
     },
     userId:{
         type:mongoose.Schema.Types.ObjectId,

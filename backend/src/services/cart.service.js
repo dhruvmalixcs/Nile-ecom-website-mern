@@ -14,7 +14,11 @@ async function createCart(user){
 
 async function findUserCart(userId){
     try {
-        let cart  = await Cart.findOne({user : user});
+        let cart  = await Cart.findOne({user : userId});
+        if (!cart) {
+            throw new Error("Cart not found for the user");
+        }
+        
         let cartItems = await CartItem.find({cart:cart._id}).populate("product");
         cart.cartItems = cartItems;
 
