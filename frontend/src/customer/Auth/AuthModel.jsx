@@ -35,5 +35,5 @@ const AuthModel = ({handleClose,open}) => {
   )
 }
 
-export default AuthModel
+export default AuthModel;
 
