@@ -7,11 +7,11 @@ import {
   ShoppingBagIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import AuthModel from "../../Auth/AuthModel";
 
 // import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Avatar, Button, Menu, MenuItem } from "@mui/material";
 // import { navigation } from "../../../config/navigationMenu";
-// import AuthModal from "../Auth/AuthModal";
 // import { useDispatch, useSelector } from "react-redux";
 import { deepPurple } from "@mui/material/colors";
 // import { getUser, logout } from "../../../Redux/Auth/Action";
@@ -496,7 +496,7 @@ export default function Navigation() {
           </div>
         </nav>
       </header>
-      <AuthModel {handleClose}/>
+      <AuthModel handleClose={handleClose}/>
     </div>
   );
 }
