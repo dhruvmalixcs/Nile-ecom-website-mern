@@ -18,6 +18,7 @@ import { deepPurple } from "@mui/material/colors";
 // import { getCart } from "../../../Redux/Customers/Cart/Action";
 import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
+import AuthModel from "../../Auth/AuthModel";
 // import { navigation } from "./navigationData";
 
 function classNames(...classes) {
@@ -411,7 +412,7 @@ export default function Navigation() {
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  {true ? (
+                  {false ? (
                     <div>
                       <Avatar
                         className="text-white"
@@ -496,7 +497,7 @@ export default function Navigation() {
           </div>
         </nav>
       </header>
-      <AuthModel handleClose={handleClose}/>
+      <AuthModel handleClose={handleClose} open={openAuthModal}/>
     </div>
   );
 }
