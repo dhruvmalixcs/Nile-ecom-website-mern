@@ -17,6 +17,7 @@ import { deepPurple } from "@mui/material/colors";
 // import { getUser, logout } from "../../../Redux/Auth/Action";
 // import { getCart } from "../../../Redux/Customers/Cart/Action";
 import TextField from "@mui/material/TextField";
+import { useNavigate } from "react-router-dom";
 // import { navigation } from "./navigationData";
 
 function classNames(...classes) {
@@ -25,7 +26,7 @@ function classNames(...classes) {
 
 export default function Navigation() {
   const [open, setOpen] = useState(false);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   // const dispatch = useDispatch();
   // const { auth, cart } = useSelector((store) => store);
   const [openAuthModal, setOpenAuthModal] = useState(false);
@@ -56,7 +57,7 @@ export default function Navigation() {
   };
 
   const handleCategoryClick = (category, section, item, close) => {
-    // navigate(`/${category.id}/${section.id}/${item.id}`);
+    navigate(`/${category.id}/${section.id}/${item.id}`);
     close();
   };
 
@@ -445,10 +446,8 @@ export default function Navigation() {
                           "aria-labelledby": "basic-button",
                         }}
                       >
-                        <MenuItem>
-                          {true?.role === "ROLE_ADMIN"
-                            ? "Admin Dashboard"
-                            : "My Orders"}
+                        <MenuItem onClick={()=>navigate("/account/order")}>
+                         My orders
                         </MenuItem>
                         <MenuItem >Logout</MenuItem>
                       </Menu>
@@ -497,6 +496,7 @@ export default function Navigation() {
           </div>
         </nav>
       </header>
+      <AuthModel {handleClose}/>
     </div>
   );
 }
