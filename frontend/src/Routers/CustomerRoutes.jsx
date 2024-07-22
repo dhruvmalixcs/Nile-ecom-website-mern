@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Cart from "../customer/components/Cart.jsx/Cart";
 import Checkout from "../customer/components/Checkout/Checkout";
-import Footer from "../customer/components/footer/footer";
+import footer from "../customer/components/footer/footer";
 import Navigation from "../customer/components/Navigation/Navigation";
 import Order from "../customer/components/Order/Order";
 import OrderDetails from "../customer/components/Order/OrderDetails";
@@ -26,7 +26,7 @@ const CustomerRoutes = () => {
       <Route path="/account/order/:orderId" element={<OrderDetails/>}></Route>
       
       </Routes>
-      <div><Footer/></div>
+      <div><footer/></div>
     </div>
   );
 };

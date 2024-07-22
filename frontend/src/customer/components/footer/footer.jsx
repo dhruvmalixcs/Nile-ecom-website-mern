@@ -2,7 +2,7 @@ import { Button } from "@mui/base";
 import { Grid, Typography } from "@mui/material";
 import React from "react";
 
-const Footer = () => {
+const footer = () => {
   return (
     <div>
       <Grid
@@ -50,4 +50,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default footer;
